@@ -1,0 +1,18 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "nuxt": "^3.14.0",
+    "vue": "latest",
+    "vue-router": "latest"
+  },
+  "packageManager": "pnpm@8.13.1+sha1.90f9b2bb3ed58632bcb7b13c3902d6873ee9501c"
+}
