@@ -1,0 +1,18 @@
+{
+  "en": "English",
+  "es": "Español",
+  "welcome": "Welcome",
+  "Home": "Home",
+  "About": "About",
+  "PWA": "PWA",
+  "Login": "Login",
+  "Close": "Close",
+  "Email": "Email",
+  "Password": "Password",
+  "Sign Up": "Sign Up",
+  "or": "or",
+  "ER": "Password is required",
+  "PR": "Password is required",
+  "PRL": "Password must be more than 8 characters",
+  "SignupError": "Signup Error! Check your email and password."
+}
