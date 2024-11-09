@@ -10,19 +10,10 @@
       <v-spacer></v-spacer>
 
       <v-toolbar-items class="hidden-sm-and-down">
-        <!-- <v-btn
-        v-for="page in pages"
-          :to="page.to"
-          :key="page.title"
-          :prepend-icon="page.icon"
-        >
-          {{ page.title }}
-        </v-btn> -->
-
         <v-menu v-for="page in pages" open-on-hover>
           <template v-slot:activator="{ props }">
             <v-btn v-bind="props" :prepend-icon="page.icon" :to="page.to">
-              {{ page.title }}
+              {{ $t(page.title) }}
             </v-btn>
           </template>
 
@@ -62,8 +53,9 @@
       </v-toolbar-items>
 
       <v-divider class="mx-2 hidden-sm-and-down" vertical inset></v-divider>
-      <!-- <LangSelector color="grey-darken-2" />
-      <AppThemeSelector color="grey-darken-2" variant="menu" />
+      <LangSelector color="grey-darken-2" />
+
+      <!-- <AppThemeSelector color="grey-darken-2" variant="menu" />
       <AppProfile /> -->
     </v-app-bar>
 
@@ -76,6 +68,8 @@
 </template>
 
 <script setup>
+import LangSelector from "./i18n/components/LangSelector.vue";
+
 const pages = [
   {
     title: "Stats",
