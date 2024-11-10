@@ -55,8 +55,8 @@
       <v-divider class="mx-2 hidden-sm-and-down" vertical inset></v-divider>
       <LangSelector color="grey-darken-2" />
 
-      <!-- <AppThemeSelector color="grey-darken-2" variant="menu" />
-      <AppProfile /> -->
+      <ThemeSelector color="grey-darken-2" variant="menu" />
+      <!-- <AppProfile /> -->
     </v-app-bar>
 
     <v-main>
@@ -68,6 +68,7 @@
 </template>
 
 <script setup>
+import ThemeSelector from "./components/ThemeSelector.vue";
 import LangSelector from "./i18n/components/LangSelector.vue";
 
 const pages = [
@@ -99,3 +100,9 @@ const pages = [
   },
 ];
 </script>
+
+<style scoped lang="scss">
+.v-theme--dark {
+  --v-theme-background: 11, 18, 31;
+}
+</style>
