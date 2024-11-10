@@ -56,7 +56,7 @@
       <LangSelector color="grey-darken-2" />
 
       <ThemeSelector color="grey-darken-2" variant="menu" />
-      <!-- <AppProfile /> -->
+      <UserProfile />
     </v-app-bar>
 
     <v-main>
