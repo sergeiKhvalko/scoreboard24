@@ -5,7 +5,11 @@
     />
 
     <v-app-bar flat>
-      <v-app-bar-title>SCOREBOARD24</v-app-bar-title>
+      <v-app-bar-title class="logo"
+        ><v-btn variant="plain" size="x-large" to="/"
+          >SCOREBOARD<span>24</span></v-btn
+        ></v-app-bar-title
+      >
 
       <v-spacer></v-spacer>
 
@@ -104,5 +108,13 @@ const pages = [
 <style scoped lang="scss">
 .v-theme--dark {
   --v-theme-background: 11, 18, 31;
+  --v-theme-surface: 20, 31, 49;
+}
+
+.logo {
+  span {
+    color: #d72638;
+    font-weight: bold;
+  }
 }
 </style>

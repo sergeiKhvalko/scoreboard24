@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-navigation color="indigo" grow height="66">
+  <v-bottom-navigation color="#34F188" grow height="66">
     <v-btn v-for="item in pages" :key="item.to" :to="item.to">
       <v-icon>{{ item.icon }}</v-icon>
       {{ item.title }}
