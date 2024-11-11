@@ -5,11 +5,11 @@
     />
 
     <v-app-bar flat>
-      <v-app-bar-title class="logo"
-        ><v-btn variant="plain" size="x-large" to="/"
-          >SCOREBOARD<span>24</span></v-btn
-        ></v-app-bar-title
-      >
+      <v-app-bar-title>
+        <v-btn variant="plain" size="x-large" to="/"
+          >SCOREBOARD<span class="text-red-accent-2">24</span></v-btn
+        >
+      </v-app-bar-title>
 
       <v-spacer></v-spacer>
 
@@ -33,23 +33,31 @@
 
           <v-list v-if="page.title === 'Leagues'" min-width="100vw">
             <v-row no-gutters>
-              <v-col cols="6">
-                <v-list-item v-for="country in page.countries" :key="country">
-                  <v-list-item-title>
-                    <v-btn flat :to="`/leagues/${country}`">{{
-                      country
-                    }}</v-btn></v-list-item-title
-                  >
-                </v-list-item>
+              <v-col cols="3" offset="3" lg="2" offset-lg="4">
+                <v-card class="overflow-y-auto" height="300">
+                  <v-list-item v-for="country in page.countries" :key="country">
+                    <v-list-item-title>
+                      <v-btn flat :to="`/leagues/${country}`">{{
+                        country
+                      }}</v-btn></v-list-item-title
+                    >
+                    <v-divider></v-divider>
+                  </v-list-item>
+                </v-card>
               </v-col>
-              <v-col cols="6">
-                <v-list-item v-for="league in page.leagues" :key="league">
-                  <v-list-item-title>
-                    <v-btn flat :to="`/leagues/${league}`">{{
-                      league
-                    }}</v-btn></v-list-item-title
-                  >
-                </v-list-item>
+              <v-col cols="6" lg="4">
+                <v-row no-gutters>
+                  <v-col cols="6" v-for="league in page.leagues" :key="league">
+                    <v-list-item>
+                      <v-list-item-title>
+                        <v-btn flat :to="`/leagues/${league}`">{{
+                          league
+                        }}</v-btn></v-list-item-title
+                      >
+                      <v-divider></v-divider>
+                    </v-list-item>
+                  </v-col>
+                </v-row>
               </v-col>
             </v-row>
           </v-list>
@@ -94,6 +102,8 @@ const pages = [
       "Spain",
       "France",
       "Portugal",
+      "Netherlands",
+      "Switzerland",
     ],
     leagues: ["RFPL", "FNL", "EPL", "Bundesliga", "Seria A"],
   },
@@ -105,16 +115,14 @@ const pages = [
 ];
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .v-theme--dark {
   --v-theme-background: 11, 18, 31;
   --v-theme-surface: 20, 31, 49;
 }
 
-.logo {
-  span {
-    color: #d72638;
-    font-weight: bold;
-  }
+.red24 {
+  color: #d72638;
+  font-weight: bold;
 }
 </style>
