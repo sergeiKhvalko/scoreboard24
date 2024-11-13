@@ -119,6 +119,7 @@ const pages = [
 .v-theme--dark {
   --v-theme-background: 11, 18, 31;
   --v-theme-surface: 20, 31, 49;
+  --v-theme-surface-light: 20, 31, 49;
 }
 
 .red24 {
