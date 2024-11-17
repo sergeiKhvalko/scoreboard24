@@ -50,29 +50,21 @@
       :items-per-page="tableItemsPerPage"
     >
       <template v-slot:default="{ items }">
-        <v-expansion-panels v-for="item in items">
+        <v-expansion-panels v-for="(item, i) in items">
           <v-expansion-panel class="font-weight-bold">
             <v-expansion-panel-title class="d-flex justify-space-between"
               ><div class="d-flex ga-2 align-center">
-                <span class="text-h6">{{ item.value }}.</span>
-                <h2>{{ item.raw.name }}</h2>
+                <span class="text-h6">{{ i + 1 }}.</span>
+                <v-img
+                  :src="item.raw.logo"
+                  width="30"
+                ></v-img>
+                <h2 class="ml-4">{{ item.raw.name }}</h2>
               </div>
               <v-spacer></v-spacer>
-              <v-chip
-                v-if="titleStats === 'corners'"
-                class="mx-4 small-bubble"
-              >
+              <v-chip class="mx-4 small-bubble">
                 <h3 class="text-h5 font-weight-bold text-green-accent-2">
-                  12.34
-                </h3>
-                /Match
-              </v-chip>
-              <v-chip
-                v-if="titleStats === 'yellow cards'"
-                class="mx-4 small-bubble"
-              >
-                <h3 class="text-h5 font-weight-bold text-green-accent-2">
-                  2.34
+                  {{ item.raw[titleStats]["average Per Match"] }}
                 </h3>
                 /Match
               </v-chip>
@@ -96,7 +88,20 @@
                 }"
               >
                 <div>{{ key }}</div>
-                <div>{{ value }}</div>
+                <div class="d-flex">
+                  <div>{{ value }}</div>
+                  <div
+                    v-if="key.startsWith('Over') || key.startsWith('Both')"
+                    class="ml-2"
+                  >
+                    ({{
+                      (
+                        (value / item.raw[titleStats]["Matches Played"]) *
+                        100
+                      ).toFixed(2)
+                    }}%)
+                  </div>
+                </div>
               </div>
             </v-expansion-panel-text>
           </v-expansion-panel>

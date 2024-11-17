@@ -86,8 +86,8 @@
               rounded="lg"
               icon="mdi-image"
               title="Corners"
-              :items="leaguesItems"
-              item-image-key="image"
+              :items="leaguesWithCorners"
+              item-image-key="logo"
               item-title-key=""
               titleStats="corners"
             />
@@ -100,7 +100,7 @@
               rounded="lg"
               icon="mdi-image"
               title="Yellow Cards"
-              :items="leaguesItems"
+              :items="leaguesWithYellows"
               item-image-key="image"
               item-title-key=""
               titleStats="yellow cards"
@@ -110,17 +110,29 @@
             cols="12"
             lg="6"
           >
-            <div>
-              <h3>Top BTTS Leagues</h3>
-            </div>
+            <Collection
+              rounded="lg"
+              icon="mdi-image"
+              title="Total Over"
+              :items="leaguesWithTotals"
+              item-image-key="image"
+              item-title-key=""
+              titleStats="total over"
+            />
           </v-col>
           <v-col
             cols="12"
             lg="6"
           >
-            <div>
-              <h3>Top Over 2.5 Goals by Teams</h3>
-            </div>
+            <Collection
+              rounded="lg"
+              icon="mdi-image"
+              title="Both Score"
+              :items="leaguesWithBothScore"
+              item-image-key="image"
+              item-title-key=""
+              titleStats="both score"
+            />
           </v-col>
         </v-row>
       </v-col>
@@ -129,179 +141,222 @@
 </template>
 
 <script setup>
-const leaguesItems = [
-  {
-    id: 1,
-    name: "Premier League",
-    image: "",
+// const { data: discounts, status } = await useAsyncData('cart-discount', async () => {
+//   const [coupons, offers] = await Promise.all([
+//     $fetch('/cart/coupons'),
+//     $fetch('/cart/offers')
+//   ])
+
+//   return { coupons, offers }
+// })
+
+const { data } = await useAsyncData("http://127.0.0.1:8000", async () => {
+  const [
+    rfplCorners,
+    fnlCorners,
+    eplCorners,
+    chCorners,
+    bundesCorners,
+    bundes2Corners,
+    seriaACorners,
+    laLigaCorners,
+    league1Corners,
+    primeraCorners,
+  ] = await Promise.all([
+    $fetch("http://127.0.0.1:8000/corners?season=2024&league=235"),
+    $fetch("http://127.0.0.1:8000/corners?season=2024&league=236"),
+    $fetch("http://127.0.0.1:8000/corners?season=2024&league=39"),
+    $fetch("http://127.0.0.1:8000/corners?season=2024&league=40"),
+    $fetch("http://127.0.0.1:8000/corners?season=2024&league=78"),
+    $fetch("http://127.0.0.1:8000/corners?season=2024&league=79"),
+    $fetch("http://127.0.0.1:8000/corners?season=2024&league=135"),
+    $fetch("http://127.0.0.1:8000/corners?season=2024&league=140"),
+    $fetch("http://127.0.0.1:8000/corners?season=2024&league=61"),
+    $fetch("http://127.0.0.1:8000/corners?season=2024&league=94"),
+  ]);
+
+  return {
+    rfplCorners,
+    fnlCorners,
+    eplCorners,
+    chCorners,
+    bundesCorners,
+    bundes2Corners,
+    seriaACorners,
+    laLigaCorners,
+    league1Corners,
+    primeraCorners,
+  };
+});
+
+const leaguesWithCorners = [];
+const leaguesWithYellows = [];
+const leaguesWithTotals = [];
+const leaguesWithBothScore = [];
+for (const league in data.value) {
+  leaguesWithCorners.push(getStatsForLeague(data.value[league]));
+  leaguesWithYellows.push(getStatsForLeague(data.value[league]));
+  leaguesWithTotals.push(getStatsForLeague(data.value[league]));
+  leaguesWithBothScore.push(getStatsForLeague(data.value[league]));
+}
+leaguesWithCorners.sort(
+  (a, b) =>
+    b["corners"]["average Per Match"] - a["corners"]["average Per Match"],
+);
+leaguesWithYellows.sort(
+  (a, b) =>
+    b["yellow cards"]["average Per Match"] -
+    a["yellow cards"]["average Per Match"],
+);
+leaguesWithTotals.sort(
+  (a, b) =>
+    b["total over"]["average Per Match"] - a["total over"]["average Per Match"],
+);
+leaguesWithBothScore.sort(
+  (a, b) =>
+    b["both score"]["average Per Match"] - a["both score"]["average Per Match"],
+);
+
+function getStatsForLeague(data) {
+  const matchweeks = data["response"][0]["league"]["matchweeks"];
+  let totalCorners = 0;
+  let totalYellowCards = 0;
+  let totalOver = 0;
+
+  const res = {
+    name: data["response"][0]["league"]["name"],
+    logo: data["response"][0]["league"]["logo"],
     corners: {
-      "Matches Played": 14,
-      "Highest in Single Match": 17,
-      "Over 9.5 Corners": "86%",
-      "Over 10.5 Corners": "71%",
-      "Over 11.5 Corners": "64%",
+      "average Per Match": 0,
+      "Matches Played": 0,
+      "Highest in Single Match": 0,
+      "Over 9.5 Corners": 0,
+      "Over 10.5 Corners": 0,
+      "Over 11.5 Corners": 0,
+      "Over 12.5 Corners": 0,
     },
     "yellow cards": {
-      "Matches Played": 14,
-      "Highest in Single Match": 9,
-      "Over 3.5 Yellow cards": "86%",
-      "Over 4.5 Yellow cards": "71%",
-      "Over 5.5 Yellow cards": "64%",
-    },
-  },
-  {
-    id: 2,
-    name: "Bundesliga",
-    image: "",
-    corners: {
-      "Matches Played": 14,
-      "Highest in Single Match": 17,
-      "Over 9.5 Corners": "86%",
-      "Over 10.5 Corners": "71%",
-      "Over 11.5 Corners": "64%",
+      "average Per Match": 0,
+      "Matches Played": 0,
+      "Highest in Single Match": 0,
+      "Over 3.5 Yellow Cards": 0,
+      "Over 4.5 Yellow Cards": 0,
+      "Over 5.5 Yellow Cards": 0,
+      "Over 6.5 Yellow Cards": 0,
     },
     "yellow cards": {
-      "Matches Played": 14,
-      "Highest in Single Match": 9,
-      "Over 3.5 Yellow cards": "86%",
-      "Over 4.5 Yellow cards": "71%",
-      "Over 5.5 Yellow cards": "64%",
+      "average Per Match": 0,
+      "Matches Played": 0,
+      "Highest in Single Match": 0,
+      "Over 3.5 Yellow Cards": 0,
+      "Over 4.5 Yellow Cards": 0,
+      "Over 5.5 Yellow Cards": 0,
+      "Over 6.5 Yellow Cards": 0,
     },
-  },
-  {
-    id: 3,
-    name: "Championship",
-    image: "",
-    corners: {
-      "Matches Played": 14,
-      "Highest in Single Match": 17,
-      "Over 9.5 Corners": "86%",
-      "Over 10.5 Corners": "71%",
-      "Over 11.5 Corners": "64%",
+    "total over": {
+      "average Per Match": 0,
+      "Matches Played": 0,
+      "Highest Total Over in Single Match": 0,
+      "Over 1.5 Total": 0,
+      "Over 2.5 Total": 0,
+      "Over 3.5 Total": 0,
+      "Over 4.5 Total": 0,
+      "Over 5.5 Total": 0,
     },
-    "yellow cards": {
-      "Matches Played": 14,
-      "Highest in Single Match": 9,
-      "Over 3.5 Yellow cards": "86%",
-      "Over 4.5 Yellow cards": "71%",
-      "Over 5.5 Yellow cards": "64%",
+    "both score": {
+      "average Per Match": 0,
+      "Matches Played": 0,
+      "Both Score": 0,
     },
-  },
-  {
-    id: 4,
-    name: "Seria A",
-    image: "",
-    corners: {
-      "Matches Played": 14,
-      "Highest in Single Match": 17,
-      "Over 9.5 Corners": "86%",
-      "Over 10.5 Corners": "71%",
-      "Over 11.5 Corners": "64%",
-    },
-    "yellow cards": {
-      "Matches Played": 14,
-      "Highest in Single Match": 9,
-      "Over 3.5 Yellow cards": "86%",
-      "Over 4.5 Yellow cards": "71%",
-      "Over 5.5 Yellow cards": "64%",
-    },
-  },
-  {
-    id: 5,
-    name: "RFPL",
-    image: "",
-    corners: {
-      "Matches Played": 14,
-      "Highest in Single Match": 17,
-      "Over 9.5 Corners": "86%",
-      "Over 10.5 Corners": "71%",
-      "Over 11.5 Corners": "64%",
-    },
-    "yellow cards": {
-      "Matches Played": 14,
-      "Highest in Single Match": 9,
-      "Over 3.5 Yellow cards": "86%",
-      "Over 4.5 Yellow cards": "71%",
-      "Over 5.5 Yellow cards": "64%",
-    },
-  },
-  {
-    id: 6,
-    name: "La Liga",
-    image: "",
-    corners: {
-      "Matches Played": 14,
-      "Highest in Single Match": 17,
-      "Over 9.5 Corners": "86%",
-      "Over 10.5 Corners": "71%",
-      "Over 11.5 Corners": "64%",
-    },
-    "yellow cards": {
-      "Matches Played": 14,
-      "Highest in Single Match": 9,
-      "Over 3.5 Yellow cards": "86%",
-      "Over 4.5 Yellow cards": "71%",
-      "Over 5.5 Yellow cards": "64%",
-    },
-  },
-  {
-    id: 7,
-    name: "League 1",
-    image: "",
-    corners: {
-      "Matches Played": 14,
-      "Highest in Single Match": 17,
-      "Over 9.5 Corners": "86%",
-      "Over 10.5 Corners": "71%",
-      "Over 11.5 Corners": "64%",
-    },
-    "yellow cards": {
-      "Matches Played": 14,
-      "Highest in Single Match": 9,
-      "Over 3.5 Yellow cards": "86%",
-      "Over 4.5 Yellow cards": "71%",
-      "Over 5.5 Yellow cards": "64%",
-    },
-  },
-  {
-    id: 8,
-    name: "Bundesliga 2",
-    image: "",
-    corners: {
-      "Matches Played": 14,
-      "Highest in Single Match": 17,
-      "Over 9.5 Corners": "86%",
-      "Over 10.5 Corners": "71%",
-      "Over 11.5 Corners": "64%",
-    },
-    "yellow cards": {
-      "Matches Played": 14,
-      "Highest in Single Match": 9,
-      "Over 3.5 Yellow cards": "86%",
-      "Over 4.5 Yellow cards": "71%",
-      "Over 5.5 Yellow cards": "64%",
-    },
-  },
-  {
-    id: 9,
-    name: "Primeira",
-    image: "",
-    corners: {
-      "Matches Played": 14,
-      "Highest in Single Match": 17,
-      "Over 9.5 Corners": "86%",
-      "Over 10.5 Corners": "71%",
-      "Over 11.5 Corners": "64%",
-    },
-    "yellow cards": {
-      "Matches Played": 14,
-      "Highest in Single Match": 9,
-      "Over 3.5 Yellow cards": "86%",
-      "Over 4.5 Yellow cards": "71%",
-      "Over 5.5 Yellow cards": "64%",
-    },
-  },
-];
+  };
+
+  for (const matchweek in matchweeks) {
+    for (const matches in matchweeks[matchweek]) {
+      //corners
+      res["corners"]["Matches Played"] += 1;
+      const match = matchweeks[matchweek][matches];
+      const currentMatchTotalCorners =
+        match["homeCorners"] + match["awayCorners"];
+      totalCorners += currentMatchTotalCorners;
+
+      res["corners"]["average Per Match"] = (
+        totalCorners / res["corners"]["Matches Played"]
+      ).toFixed(2);
+
+      if (currentMatchTotalCorners > 9.5)
+        res["corners"]["Over 9.5 Corners"] += 1;
+      if (currentMatchTotalCorners > 10.5)
+        res["corners"]["Over 10.5 Corners"] += 1;
+      if (currentMatchTotalCorners > 11.5)
+        res["corners"]["Over 11.5 Corners"] += 1;
+      if (currentMatchTotalCorners > 12.5)
+        res["corners"]["Over 12.5 Corners"] += 1;
+
+      res["corners"]["Highest in Single Match"] = Math.max(
+        res["corners"]["Highest in Single Match"],
+        currentMatchTotalCorners,
+      );
+
+      //yellow cards
+      res["yellow cards"]["Matches Played"] += 1;
+      const currentMatchTotalYellow =
+        match["homeYellowCards"].length + match["awayYellowCards"].length;
+
+      totalYellowCards += currentMatchTotalYellow;
+
+      res["yellow cards"]["average Per Match"] = (
+        totalYellowCards / res["yellow cards"]["Matches Played"]
+      ).toFixed(2);
+
+      if (currentMatchTotalYellow > 3.5)
+        res["yellow cards"]["Over 3.5 Yellow Cards"] += 1;
+      if (currentMatchTotalYellow > 4.5)
+        res["yellow cards"]["Over 4.5 Yellow Cards"] += 1;
+      if (currentMatchTotalYellow > 5.5)
+        res["yellow cards"]["Over 5.5 Yellow Cards"] += 1;
+      if (currentMatchTotalYellow > 6.5)
+        res["yellow cards"]["Over 6.5 Yellow Cards"] += 1;
+
+      res["yellow cards"]["Highest in Single Match"] = Math.max(
+        res["yellow cards"]["Highest in Single Match"],
+        currentMatchTotalYellow,
+      );
+
+      // total over
+      res["total over"]["Matches Played"] += 1;
+      const currentMatchTotalOver =
+        match["homeGoals"].length + match["awayGoals"].length;
+
+      totalOver += currentMatchTotalOver;
+
+      res["total over"]["average Per Match"] = (
+        totalOver / res["total over"]["Matches Played"]
+      ).toFixed(2);
+
+      if (currentMatchTotalOver > 1.5) res["total over"]["Over 1.5 Total"] += 1;
+      if (currentMatchTotalOver > 2.5) res["total over"]["Over 2.5 Total"] += 1;
+      if (currentMatchTotalOver > 3.5) res["total over"]["Over 3.5 Total"] += 1;
+      if (currentMatchTotalOver > 4.5) res["total over"]["Over 4.5 Total"] += 1;
+      if (currentMatchTotalOver > 5.5) res["total over"]["Over 5.5 Total"] += 1;
+
+      res["total over"]["Highest Total Over in Single Match"] = Math.max(
+        res["total over"]["Highest Total Over in Single Match"],
+        currentMatchTotalOver,
+      );
+
+      // both score
+      res["both score"]["Matches Played"] += 1;
+      if (match["homeGoals"].length > 0 && match["awayGoals"].length > 0) {
+        res["both score"]["Both Score"] += 1;
+      }
+      res["both score"]["average Per Match"] = (
+        res["both score"]["Both Score"] / res["both score"]["Matches Played"]
+      ).toFixed(2);
+    }
+  }
+
+  return res;
+}
 </script>
 
 <style>
