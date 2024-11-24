@@ -141,14 +141,8 @@
 </template>
 
 <script setup>
-// const { data: discounts, status } = await useAsyncData('cart-discount', async () => {
-//   const [coupons, offers] = await Promise.all([
-//     $fetch('/cart/coupons'),
-//     $fetch('/cart/offers')
-//   ])
-
-//   return { coupons, offers }
-// })
+const route = useRoute();
+const { season: seasonId } = route.query;
 
 const { data } = await useAsyncData("http://127.0.0.1:8000", async () => {
   const [
@@ -163,16 +157,36 @@ const { data } = await useAsyncData("http://127.0.0.1:8000", async () => {
     league1Corners,
     primeraCorners,
   ] = await Promise.all([
-    $fetch("http://127.0.0.1:8000/corners?season=2024&league=235"),
-    $fetch("http://127.0.0.1:8000/corners?season=2024&league=236"),
-    $fetch("http://127.0.0.1:8000/corners?season=2024&league=39"),
-    $fetch("http://127.0.0.1:8000/corners?season=2024&league=40"),
-    $fetch("http://127.0.0.1:8000/corners?season=2024&league=78"),
-    $fetch("http://127.0.0.1:8000/corners?season=2024&league=79"),
-    $fetch("http://127.0.0.1:8000/corners?season=2024&league=135"),
-    $fetch("http://127.0.0.1:8000/corners?season=2024&league=140"),
-    $fetch("http://127.0.0.1:8000/corners?season=2024&league=61"),
-    $fetch("http://127.0.0.1:8000/corners?season=2024&league=94"),
+    $fetch(
+      `https://sergeikhvalko-football-app-back-5e0a.twc1.net/stats?season=${seasonId}&league=235`,
+    ),
+    $fetch(
+      `https://sergeikhvalko-football-app-back-5e0a.twc1.net/stats?season=${seasonId}&league=236`,
+    ),
+    $fetch(
+      `https://sergeikhvalko-football-app-back-5e0a.twc1.net/stats?season=${seasonId}&league=39`,
+    ),
+    $fetch(
+      `https://sergeikhvalko-football-app-back-5e0a.twc1.net/stats?season=${seasonId}&league=40`,
+    ),
+    $fetch(
+      `https://sergeikhvalko-football-app-back-5e0a.twc1.net/stats?season=${seasonId}&league=78`,
+    ),
+    $fetch(
+      `https://sergeikhvalko-football-app-back-5e0a.twc1.net/stats?season=${seasonId}&league=79`,
+    ),
+    $fetch(
+      `https://sergeikhvalko-football-app-back-5e0a.twc1.net/stats?season=${seasonId}&league=135`,
+    ),
+    $fetch(
+      `https://sergeikhvalko-football-app-back-5e0a.twc1.net/stats?season=${seasonId}&league=140`,
+    ),
+    $fetch(
+      `https://sergeikhvalko-football-app-back-5e0a.twc1.net/stats?season=${seasonId}&league=61`,
+    ),
+    $fetch(
+      `https://sergeikhvalko-football-app-back-5e0a.twc1.net/stats?season=${seasonId}&league=94`,
+    ),
   ]);
 
   return {
