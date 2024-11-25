@@ -20,6 +20,7 @@
         <v-menu
           v-for="page in pages"
           open-on-hover
+          :close-on-content-click="false"
         >
           <template v-slot:activator="{ props }">
             <v-btn
@@ -61,19 +62,33 @@
                   class="overflow-y-auto"
                   height="300"
                 >
-                  <v-list-item
+                  <v-expansion-panels>
+                    <v-expansion-panel
+                      v-for="country in page.countries"
+                      :key="country"
+                    >
+                      <v-expansion-panel-title class="mt-4">
+                        {{ country }}
+                      </v-expansion-panel-title>
+                      <v-expansion-panel-text class="collection-text">
+                        {{ country }}
+                      </v-expansion-panel-text>
+                    </v-expansion-panel>
+                  </v-expansion-panels>
+                  <!-- <v-list-item
                     v-for="country in page.countries"
                     :key="country"
-                  >
-                    <v-list-item-title>
+                  > -->
+
+                  <!-- <v-list-item-title>
                       <v-btn
                         flat
                         :to="`/leagues/${country}`"
                         >{{ country }}</v-btn
                       ></v-list-item-title
-                    >
-                    <v-divider></v-divider>
-                  </v-list-item>
+                    > -->
+                  <!-- </v-list-item> -->
+                  <v-divider></v-divider>
                 </v-card>
               </v-col>
               <v-col
@@ -172,7 +187,7 @@ const pages = [
   {
     title: "Matches",
     icon: "mdi-soccer-field",
-    to: "/matches",
+    to: "/",
   },
 ];
 </script>
@@ -187,5 +202,16 @@ const pages = [
 .red24 {
   color: #d72638;
   font-weight: bold;
+}
+
+.v-expansion-panel-title--active {
+  background: #3e4c71;
+}
+.collection-text {
+  background: #15264d;
+}
+
+.small-bubble {
+  background: #313e61;
 }
 </style>

@@ -44,7 +44,7 @@
         >
           <v-row>
             <v-col
-              cols="3"
+              cols="4"
               sm="5"
               md="2"
             >
@@ -53,6 +53,7 @@
                 width="150"
                 height="150"
                 contain
+                class="mx-auto"
               ></v-img>
             </v-col>
             <v-col
@@ -63,6 +64,11 @@
                 variant="text"
                 :size="$vuetify.display.mdAndUp ? 'x-large' : 'large'"
                 class="mb-4"
+                :to="`leagues/${item['response'][0]['league'][
+                  'name'
+                ].toLowerCase()}?season=${seasonId}&league=${
+                  item['parameters']['league']
+                }`"
                 >{{ item["response"][0]["league"]["name"] }}</v-btn
               >
               <div class="pl-6 d-flex">
@@ -83,13 +89,36 @@
               vertical
             ></v-divider>
             <v-col
-              cols="5"
-              md="3"
+              v-if="$vuetify.display.smAndDown"
+              cols="3"
+              sm="2"
+              ><v-btn
+                variant="text"
+                size="x-large"
+                class="h-100"
+                :to="`leagues/${item['response'][0]['league'][
+                  'name'
+                ].toLowerCase()}?season=${seasonId}&league=${
+                  item['parameters']['league']
+                }`"
+                ><v-icon
+                  class="text-h3 text-md-h2 text-lg-h1 text-green-accent-2"
+                  >mdi-chevron-right</v-icon
+                ></v-btn
+              ></v-col
             >
-              <div class="h-100 d-flex align-center">
-                <div class="w-50 text-center">
+            <v-col
+              cols="6"
+              sm="5"
+              md="3"
+              class="px-0"
+            >
+              <div class="h-100 d-flex align-center justify-center ga-2">
+                <div class="text-center">
                   <v-chip class="small-bubble pa-6 mb-2">
-                    <h3 class="text-h4 font-weight-bold text-green-accent-2">
+                    <h3
+                      class="text-h6 text-sm-h5 text-lg-h4 font-weight-bold text-green-accent-2"
+                    >
                       {{
                         (
                           item["response"][0]["league"]["totalGoals"] /
@@ -98,11 +127,13 @@
                       }}
                     </h3>
                   </v-chip>
-                  <p>Goals/Match</p>
+                  <p class="text-subtitle-2 text-sm-subtitle-1">Goals/Match</p>
                 </div>
-                <div class="w-50 text-center">
+                <div class="text-center">
                   <v-chip class="small-bubble pa-6 mb-2">
-                    <h3 class="text-h4 font-weight-bold text-green-accent-2">
+                    <h3
+                      class="text-h6 text-sm-h5 text-lg-h4 font-weight-bold text-green-accent-2"
+                    >
                       {{
                         Math.round(
                           (item["response"][0]["league"]["totalOver2.5"] /
@@ -112,12 +143,13 @@
                       }}%
                     </h3>
                   </v-chip>
-                  <p>Over 2.5</p>
+                  <p class="text-subtitle-2 text-sm-subtitle-1">Over 2.5</p>
                 </div>
               </div>
             </v-col>
             <v-col
-              cols="5"
+              cols="6"
+              sm="7"
               md="3"
             >
               <div
@@ -139,13 +171,25 @@
                 </div>
               </div>
             </v-col>
-            <!-- <v-col
-              cols="4"
-              md="1"
-              ><v-btn icon
-                ><v-icon>"mdi-arrow-right-bold"</v-icon></v-btn
+            <v-col
+              v-if="$vuetify.display.mdAndUp"
+              cols="1"
+              class="px-0"
+              ><v-btn
+                variant="text"
+                size="x-large"
+                class="h-100"
+                :to="`leagues/${item['response'][0]['league'][
+                  'name'
+                ].toLowerCase()}?season=${seasonId}&league=${
+                  item['parameters']['league']
+                }`"
+                ><v-icon
+                  class="text-h3 text-md-h2 text-lg-h1 text-green-accent-2"
+                  >mdi-chevron-right</v-icon
+                ></v-btn
               ></v-col
-            > -->
+            >
           </v-row>
           <v-expansion-panels>
             <v-expansion-panel class="font-weight-bold">
@@ -174,7 +218,6 @@
                       {{ key }}
                     </v-expansion-panel-title>
                     <v-expansion-panel-text class="collection-text">
-                      <!-- {{ value }} -->
                       <div
                         v-for="(numberOfMatchweeks, numberOfTimes, i) in value"
                         class="d-flex justify-space-between py-4"
@@ -302,8 +345,6 @@ function getCompletedProgress(league) {
 }
 
 function getInfoForAllMatchweeks(matchweeks) {
-  console.log(matchweeks);
-
   const res = {};
 
   for (const key in matchweeks) {
@@ -544,4 +585,6 @@ function getInfoForAllMatchweeks(matchweeks) {
 
   return res;
 }
+
+console.log(data.value);
 </script>

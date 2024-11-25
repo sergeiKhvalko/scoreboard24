@@ -249,15 +249,4 @@ function setAttr(key, value, q = {}) {
 }
 </script>
 
-<style>
-.v-expansion-panel-title--active {
-  background: #3e4c71;
-}
-.collection-text {
-  background: #15264d;
-}
-
-.small-bubble {
-  background: #313e61;
-}
-</style>
+<style></style>
